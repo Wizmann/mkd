@@ -17,6 +17,11 @@ Hello World!
 
 我们的口号是：#闷声发大财#
 
+> 美国记者华莱士，北大教授王铁崖
+> 比你们高到不知道哪里去啦！
+
+> Naive!
+
 '''
 
 result = parser.parse(data)

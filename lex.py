@@ -3,15 +3,17 @@ import ply.lex as lex
 
 tokens = (
         'HEAD',
+        'QUOTE',
         'LINE',
         'CR'
 )
 
 t_HEAD = r'(?m)^\#+'
+t_QUOTE = r'(?m)^\>'
 t_LINE = r'.+'
 
 def t_CR(t):
-    r'\n+'
+    r'\n'
     t.lexer.lineno += len(t.value)
     return t
 

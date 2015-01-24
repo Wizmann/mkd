@@ -55,3 +55,7 @@ target/
 
 parser.out
 parsetab.py
+
+# Vim tmp files
+*.swp
+*.swo

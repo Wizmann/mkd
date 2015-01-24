@@ -20,8 +20,9 @@ def p_content(p):
 
 def p_expression(p):
     ''' expression : headline
+                   | quotes
                    | LINE CR
-                   | CR
+                   | cr
     '''
     if isinstance(p[1], dict):
         p[0] = p[1]
@@ -31,12 +32,36 @@ def p_expression(p):
             'line': p[1],
         }
 
+def p_expression_cr(p):
+    ''' cr : CR '''
+    p[0] = {
+        'type': 'CR',
+    }
+
+def p_expression_quotes(p):
+    ''' quotes : quotes QUOTE LINE CR
+               | QUOTE LINE CR
+    '''
+    if len(p) == 5 and p[3]:
+        if not p[1]:
+            p[1] = {
+                'type': 'QUOTE',
+                'line': []
+            }
+        p[1]['line'].append(p[3].strip())
+        p[0] = p[1]
+    elif len(p) == 4 and p[2]:
+        p[0] = {
+            'type': 'QUOTE',
+            'line': [p[2].strip()],
+        }
+
 def p_expression_head(p):
     '''headline : HEAD LINE CR'''
     p[0] = {
         'type': 'HEADING',
         'level': len(p[1]),
-        'line': p[2],
+        'line': p[2].strip(),
     }
 
 def p_error(p):
