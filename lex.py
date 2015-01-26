@@ -4,13 +4,17 @@ import ply.lex as lex
 tokens = (
         'HEAD',
         'QUOTE',
+        'OLIST',
+        'ULIST',
         'LINE',
         'CR'
 )
 
-t_HEAD = r'(?m)^\#+'
+t_HEAD  = r'(?m)^\#+'
 t_QUOTE = r'(?m)^\>'
-t_LINE = r'.+'
+t_OLIST  = r'(?m)^\d+\.\ '
+t_ULIST = r'(?m)^\*\ '
+t_LINE  = r'.+'
 
 def t_CR(t):
     r'\n'

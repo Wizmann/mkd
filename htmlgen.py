@@ -32,18 +32,31 @@ class headingRender(BaseRender):
 
 class crRender(BaseRender):
     render_type = 'CR'
-    render_tpl  =  Template('<br/>')
+    render_tpl  =  Template('<p></p>')
 
 
-class quotaRender(BaseRender):
+class quoteRender(BaseRender):
     render_type = 'QUOTE'
     render_tpl  =  Template(
-            '<blockquote>\n{% for l in line %}<p>{{ l }}</p>{% endfor %}</blockquote>')
+            '<blockquote>\n{% for l in line %}<p>{{ l }}</p>\n{% endfor %}</blockquote>')
 
 
-class dftRender(BaseRender):
+class ulistRender(BaseRender):
+    render_type = 'ULIST'
+    render_tpl  = Template(
+            '<ul>\n{% for l in line %}<li>{{ l }}</li>\n{% endfor %}</ul>')
+
+
+class olistRender(BaseRender):
+    render_type = 'OLIST'
+    render_tpl  = Template(
+            '<ol>\n{% for l in line %}<li>{{ l }}</li>\n{% endfor %}</ol>')
+
+
+class lineRender(BaseRender):
     render_type = 'LINE'
     render_tpl  = Template('<p>{{ line }}</p>')
+
 
 class dftRender(BaseRender):
     render_type = ''

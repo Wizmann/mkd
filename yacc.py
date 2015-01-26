@@ -21,6 +21,8 @@ def p_content(p):
 def p_expression(p):
     ''' expression : headline
                    | quotes
+                   | ulists
+                   | olists
                    | LINE CR
                    | cr
     '''
@@ -53,6 +55,42 @@ def p_expression_quotes(p):
     elif len(p) == 4 and p[2]:
         p[0] = {
             'type': 'QUOTE',
+            'line': [p[2].strip()],
+        }
+
+def p_expression_olists(p):
+    ''' olists : olists OLIST LINE CR
+               | OLIST LINE CR
+    '''
+    if len(p) == 5 and p[3]:
+        if not p[1]:
+            p[1] = {
+                'type': 'OLIST',
+                'line': []
+            }
+        p[1]['line'].append(p[3].strip())
+        p[0] = p[1]
+    elif len(p) == 4 and p[2]:
+        p[0] = {
+            'type': 'OLIST',
+            'line': [p[2].strip()],
+        }
+
+def p_expression_ulists(p):
+    ''' ulists : ulists ULIST LINE CR
+               | ULIST LINE CR
+    '''
+    if len(p) == 5 and p[3]:
+        if not p[1]:
+            p[1] = {
+                'type': 'ULIST',
+                'line': []
+            }
+        p[1]['line'].append(p[3].strip())
+        p[0] = p[1]
+    elif len(p) == 4 and p[2]:
+        p[0] = {
+            'type': 'ULIST',
             'line': [p[2].strip()],
         }
 

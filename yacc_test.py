@@ -55,5 +55,34 @@ class TestYacc(unittest.TestCase):
         self.assertEqual(result[2]['type'], 'QUOTE')
         self.assertEqual(result[2]['line'], ['dah'])
 
+    def test_yacc_olist(self):
+        data = '1. foo\n2. bar\n\n3. dah\n'
+        result = parser.parse(data)
+
+        self.assertEqual(len(result), 3)
+
+        self.assertEqual(result[0]['type'], 'OLIST')
+        self.assertEqual(result[0]['line'], ['foo', 'bar'])
+
+        self.assertEqual(result[1]['type'], 'CR')
+
+        self.assertEqual(result[2]['type'], 'OLIST')
+        self.assertEqual(result[2]['line'], ['dah'])
+
+    def test_yacc_ulist(self):
+        data = '* foo\n* bar\n\n* dah\n'
+        result = parser.parse(data)
+
+        self.assertEqual(len(result), 3)
+
+        self.assertEqual(result[0]['type'], 'ULIST')
+        self.assertEqual(result[0]['line'], ['foo', 'bar'])
+
+        self.assertEqual(result[1]['type'], 'CR')
+
+        self.assertEqual(result[2]['type'], 'ULIST')
+        self.assertEqual(result[2]['line'], ['dah'])
+
+
 if __name__ == '__main__':
     unittest.main()
