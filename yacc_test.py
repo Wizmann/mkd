@@ -29,17 +29,31 @@ class TestYacc(unittest.TestCase):
         self.assertEqual(result[0]['type'], 'CR')
         self.assertEqual(result[1]['type'], 'CR')
 
-    def test_yacc_line(self):
+    def test_yacc_raw_line(self):
         data = 'foo\nbar\n'
         result = parser.parse(data)
-
         self.assertEqual(len(result), 2)
 
-        self.assertEqual(result[0]['type'], 'LINE')
-        self.assertEqual(result[0]['line'], 'foo')
+        self.assertEqual(result[0][0]['type'], 'RAW')
+        self.assertEqual(result[0][0]['line'], 'foo')
 
-        self.assertEqual(result[1]['type'], 'LINE')
-        self.assertEqual(result[1]['line'], 'bar')
+        self.assertEqual(result[1][0]['type'], 'RAW')
+        self.assertEqual(result[1][0]['line'], 'bar')
+
+    def test_yacc_bold_line(self):
+        data = 'foo**bar**dah\n'
+        result = parser.parse(data)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(len(result[0]), 3)
+
+        self.assertEqual(result[0][0]['type'], 'RAW')
+        self.assertEqual(result[0][0]['line'], 'foo')
+
+        self.assertEqual(result[0][1]['type'], 'BOLD')
+        self.assertEqual(result[0][1]['line'], 'bar')
+
+        self.assertEqual(result[0][2]['type'], 'RAW')
+        self.assertEqual(result[0][2]['line'], 'dah')
 
     def test_yacc_quote(self):
         data = '> foo\n> bar\n\n> dah\n'

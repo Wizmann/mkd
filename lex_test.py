@@ -76,5 +76,40 @@ class TestLex(unittest.TestCase):
             self.assertEqual(token_type, token.type)
         self.assertIsNone(lex.lexer.token())
 
+    def test_lexer_bold(self):
+        dataset = [
+            'aa**foo**bb',
+            'aa**foo bar dah**bb',
+        ]
+        tokenset = [
+            ['LINE', 'BOLD', 'LINE', 'BOLD', 'LINE'],
+            ['LINE', 'BOLD', 'LINE', 'BOLD', 'LINE'],
+        ]
+        for data, tokens in zip(dataset, tokenset):
+            lex.lexer.input(data)
+
+            for token_type in tokens:
+                token = lex.lexer.token()
+                self.assertEqual(token_type, token.type)
+            self.assertIsNone(lex.lexer.token())
+
+    def test_lexer_italic(self):
+        dataset = [
+            'aa__foo__bb',
+            'aa__foo bar dah__bb',
+        ]
+        tokenset = [
+            ['LINE', 'ITALIC', 'LINE', 'ITALIC', 'LINE'],
+            ['LINE', 'ITALIC', 'LINE', 'ITALIC', 'LINE'],
+        ]
+        for data, tokens in zip(dataset, tokenset):
+            lex.lexer.input(data)
+
+            for token_type in tokens:
+                token = lex.lexer.token()
+                self.assertEqual(token_type, token.type)
+            self.assertIsNone(lex.lexer.token())
+
+
 if __name__ == '__main__':
     unittest.main()

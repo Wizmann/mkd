@@ -6,15 +6,39 @@ tokens = (
         'QUOTE',
         'OLIST',
         'ULIST',
+        'BOLD',
+        'ITALIC',
         'LINE',
         'CR'
 )
 
-t_HEAD  = r'(?m)^\#+'
-t_QUOTE = r'(?m)^\>'
-t_OLIST  = r'(?m)^\d+\.\ '
-t_ULIST = r'(?m)^\*\ '
-t_LINE  = r'.+'
+def t_HEAD(t):
+    r'(?m)^\#+'
+    return t
+
+def t_QUOTE(t):
+    r'(?m)^\>'
+    return t
+
+def t_OLIST(t):
+    r'(?m)^\d+\.\ '
+    return t
+
+def t_ULIST(t):
+    r'(?m)^\*\ '
+    return t
+
+def t_BOLD(t):
+    r'\*\*'
+    return t
+
+def t_ITALIC(t):
+    r'\_\_'
+    return t
+
+def t_LINE(t): 
+    r'[^\*\_\n]+'
+    return t
 
 def t_CR(t):
     r'\n'
