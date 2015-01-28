@@ -34,26 +34,61 @@ class TestYacc(unittest.TestCase):
         result = parser.parse(data)
         self.assertEqual(len(result), 2)
 
-        self.assertEqual(result[0][0]['type'], 'RAW')
-        self.assertEqual(result[0][0]['line'], 'foo')
+        self.assertEqual(result[0]['type'], 'LINE')
+        self.assertEqual(result[0]['line'][0]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][0]['line'], 'foo')
 
-        self.assertEqual(result[1][0]['type'], 'RAW')
-        self.assertEqual(result[1][0]['line'], 'bar')
+        self.assertEqual(result[1]['line'][0]['type'], 'RAW')
+        self.assertEqual(result[1]['line'][0]['line'], 'bar')
 
     def test_yacc_bold_line(self):
         data = 'foo**bar**dah\n'
         result = parser.parse(data)
         self.assertEqual(len(result), 1)
-        self.assertEqual(len(result[0]), 3)
 
-        self.assertEqual(result[0][0]['type'], 'RAW')
-        self.assertEqual(result[0][0]['line'], 'foo')
+        self.assertEqual(result[0]['type'], 'LINE')
 
-        self.assertEqual(result[0][1]['type'], 'BOLD')
-        self.assertEqual(result[0][1]['line'], 'bar')
+        self.assertEqual(result[0]['line'][0]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][0]['line'], 'foo')
 
-        self.assertEqual(result[0][2]['type'], 'RAW')
-        self.assertEqual(result[0][2]['line'], 'dah')
+        self.assertEqual(result[0]['line'][1]['type'], 'BOLD')
+        self.assertEqual(result[0]['line'][1]['line'], 'bar')
+
+        self.assertEqual(result[0]['line'][2]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][2]['line'], 'dah')
+
+    def test_yacc_italic_line(self):
+        data = 'foo__bar__dah\n'
+        result = parser.parse(data)
+        self.assertEqual(len(result), 1)
+
+        self.assertEqual(result[0]['type'], 'LINE')
+
+        self.assertEqual(result[0]['line'][0]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][0]['line'], 'foo')
+
+        self.assertEqual(result[0]['line'][1]['type'], 'ITALIC')
+        self.assertEqual(result[0]['line'][1]['line'], 'bar')
+
+        self.assertEqual(result[0]['line'][2]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][2]['line'], 'dah')
+
+    def test_yacc_full_line(self):
+        data = 'foo__bar__dah**lah**\n'
+        result = parser.parse(data)
+        self.assertEqual(len(result), 1)
+
+        self.assertEqual(result[0]['line'][0]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][0]['line'], 'foo')
+
+        self.assertEqual(result[0]['line'][1]['type'], 'ITALIC')
+        self.assertEqual(result[0]['line'][1]['line'], 'bar')
+
+        self.assertEqual(result[0]['line'][2]['type'], 'RAW')
+        self.assertEqual(result[0]['line'][2]['line'], 'dah')
+
+        self.assertEqual(result[0]['line'][3]['type'], 'BOLD')
+        self.assertEqual(result[0]['line'][3]['line'], 'lah')
 
     def test_yacc_quote(self):
         data = '> foo\n> bar\n\n> dah\n'

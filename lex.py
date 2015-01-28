@@ -37,7 +37,7 @@ def t_ITALIC(t):
     return t
 
 def t_LINE(t): 
-    r'[^\*\_\n]+'
+    r'([^\*\_\n])+'
     return t
 
 def t_CR(t):

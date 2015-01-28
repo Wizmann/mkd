@@ -32,6 +32,10 @@ Hello World!
 * 为什么人要上床？
 * 因为床不会自己来找人啊！
 
+你们这些**螳臂当车**的歹徒！
+
+All you need is __love__, **love** is all you need.
+
 '''
 
 result = parser.parse(data)

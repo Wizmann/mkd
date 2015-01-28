@@ -1,5 +1,4 @@
 import ply.yacc as yacc
-
 from lex import tokens
 
 def p_content(p):
@@ -29,20 +28,34 @@ def p_expression(p):
     p[0] = p[1]
 
 def p_expression_line(p):
-    ''' line : line bold
-             | line italic
-             | line raw_line
-             | bold
-             | italic
-             | raw_line
+    ''' line : line line_clip
+             | line_clip
     '''
-    if len(p) == 3:
-        if isinstance(p[1], dict):
-            p[1] = [p[1]]
-        p[1].append(p[2])
+    if len(p) == 2 and p[1]:
+        if not p[0]:
+            p[0] = {
+                'type': 'LINE',
+                'line': [p[1]],
+            }
+        else:
+            p[0]['line'].append(p[1])
+    elif len(p) == 3:
         p[0] = p[1]
-    elif len(p) == 2:
-        p[0] = [p[1]]
+        if not p[0]:
+            p[0] = {
+                'type': 'LINE',
+                'line': [],
+            }
+        if p[2]:
+            p[0]['line'].append(p[2])
+
+
+def p_expression_line_clip(p):
+    ''' line_clip : bold
+                  | italic
+                  | raw_line
+    '''
+    p[0] = p[1]
 
 def p_expression_bold(p):
     ''' bold : BOLD LINE BOLD '''

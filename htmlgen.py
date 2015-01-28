@@ -55,7 +55,17 @@ class olistRender(BaseRender):
 
 class lineRender(BaseRender):
     render_type = 'LINE'
-    render_tpl  = Template('<p>{{ line }}</p>')
+    render_tpl  = Template(
+            '<p>{% for l in line %}'
+            '{% if l.type == "BOLD" %}'
+            '<b> {{ l.line }} </b>'
+            '{% elif l.type == "ITALIC" %}'
+            '<i> {{ l.line }} </i>'
+            '{% else %}'
+            '{{ l.line }}'
+            '{% endif %}'
+            '{% endfor %}'
+            '</p>')
 
 
 class dftRender(BaseRender):
